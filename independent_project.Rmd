@@ -1,0 +1,185 @@
+---
+title: "Individual Project"
+author: "Michael Henderson"
+date: "`r Sys.Date()`"
+output:
+  bookdown::html_document2: 
+    toc: TRUE
+    toc_float: true
+    toc_collapsed: true
+    toc_depth: 3
+    number_sections: true
+    theme: cerulean
+    fig_caption: true
+    css: font_sizes.css
+link-citations: yes
+bibliography: ref.bib
+csl: journal-of-animal-ecology.csl
+---
+
+```{r setup, include = FALSE, cache = FALSE, message = FALSE}
+
+knitr::opts_chunk$set(
+  echo = TRUE,
+  message = FALSE,
+  warning = FALSE,
+  fig.align = "center"
+)
+
+```
+
+
+```{r packages, results = "hide"}
+# Load R packages
+#Create a vector w/ the required R packages
+pkg <- c("knitr", "rmarkdown", "bookdown", "formattable", "kableExtra", "tidyverse", "magrittr", "prettydoc", "htmltools", "knitcitations", "bibtex", "devtools", "formatR","palmerpenguins", "knitcitations", "patchwork")
+
+#2. Check if pkg are already installed on your computer
+print("Check if packages are installed")
+
+#This line outputs a list of packages that are not installed
+new.pkg <- pkg[!(pkg %in% installed.packages())]
+
+
+#3. Install missing packages
+# Use an if/else statement to check whether packages have to be installed
+# WARNING: If your target R package is not deposited on CRAN then you need to adjust code/function
+if(length(new.pkg) > 0){
+  print(paste("Install missing package(s):", new.pkg, sep=' '))
+  install.packages(new.pkg, dependencies = TRUE)
+}else{
+  print("All packages are already installed!")
+}
+
+
+#4. Load all required packages
+print("Load packages and return status")
+
+#Here we use the sapply() function to require all the packages
+# To know more about the function type ?sapply() in R console
+sapply(pkg, require, character.only = TRUE)
+
+#save the citations for the reference section
+knitr::write_bib(.packages(), file = "packages.bib")
+
+```
+
+# Title
+# Key elements for project 
++ What types of data are already published or available, and which are relevant to your topic?
++ Where are these published data deposited?
++ Can you reproduce the analyses based on the published data?
++ What types of data are or will be generated during your thesis project?
++ What are the specific characteristics of your data (e.g., storage, sharing requirements)?
++ What are the publication standards in your field? (see e.g., Donoho, 2010; Smith et al., 2016)
++ Etc.
+
+
+# Core processes 
+
++ A data management workflow specific to your research, which will cover the following stages of the data life cycle (see e.g. British Ecological Society, 2014a):
++ Create
++ Process
++ Document
++ Preserve
++ Share
++ Reuse
++ A reproducible code to perform the following tasks to your data 
++ Import
++ Tidy/clean
++ Transform
++ Visualize
+
+## Introduction
+Global temperatures are warming primarily due to anthropogenic activities, leading to significantly altered weather patterns (IPCC 2023). These weather changes vary spatially and impact natural systems in a variety of complex ways (Buckley 2016, McGaughran 2021, Martínez-Ruiz 2023). For example, warmer Arctic temperatures are leading to increased precipitation, whereas warmer subtropical temperatures are decreasing precipitation and leading to more frequent droughts (Trenberth 2003, Bintanja 2018, Cook 2018). These gradual weather changes can shift mean weather metrics overtime, but short-term deviations from the mean (i.e., climate variability), are also increasing with climate change (Seneviratne 2023, Fischer 2015). Greater climate variability, in turn, leads to more frequent, intense, and longer duration weather events such as heat waves and storms (Perkins-Kirkpatrick 2020; Min 2011, Seneviratne 2023). Rates of change also vary spatially, and Arctic weather changes are among the fastest in the world due to Arctic amplification (Malik 2025, Screen 2010, Rantanen 2022). Consequently, mean Arctic temperatures have increased up to four times faster than the global average, accompanied by increased climate variability including most intense and frequent extreme weather events. These climatic changes are likely to persist in the Arctic (), creating novel weather patterns with lasting consequences for Arctic species.  
+	Weather changes, including gradual changes and increased climate variability, can affect wildlife through multiple pathways. For example, when environmental conditions exceed a species’ thermal tolerance, physiological effects can occur, including increased metabolic rate, evaporative water loss, and heat stress leading to lower body condition  (Huey 2012, Ouyang 2015, Hansen 2009, Gilg 2012, Crino 2020, Fossøy 2015, Dugger 2025). Species thermal tolerance windows likely evolved to optimize molecular, cellular, and systemic processes within the historical conditions in which they evolved (Gilg 2010, Pörtner 2008). As weather patterns change, species can be exposed to conditions outside their thermal tolerance more frequently and for longer duration, leading to demographic effects like lower reproduction and survival (that one paper!). Alternatively, weather conditions can also alter species interactions, including the ability of predators to acquire prey. For example, inclement weather events can decrease predator hunting success, leading to lower prey acquisition, food provisioning for young, body condition, and survival (Perrig 2014, Schifferli 2014, Will 2014, Nägeli 2022). Predators may hunt alternative prey as a mechanism to buffer against demographic effects, although this strategy may also incur energetic costs, reduced food quality, or novel risks like disease (Will 2015, Dudek 2018, Radcliffe and Henderson 2023). As a result, changing weather patterns can affect predators by imposing physiological costs, limiting access to prey, and forcing shifts in diet. 
+These effects of climate change vary between gradually shifting means and increased climate variability (Garcia 2014, Maxwell 2019, Marcelino 2020, Neilson 2020, Clark-Wolf 2023). Gradual changes can alter species phenology and lead to range shifts, which can accumulate to alter species interactions and community dynamics ().  Conversely, increased climate variability is linked to greater impacts on species demography, by exposing individuals to more extreme and longer duration weather events. For example, extreme weather events, such as hurricanes, frequently cause widespread mortalities and reproductive failures (). Less severe but statistically rare weather events can still have pronounced effects, demonstrated by a complete ecosystem wide reproductive failure following unusually high precipitation in Greenland (Schmidt 2019). The duration of weather events can also be an important factor for the effects of climate variability on wildlife (Cohen 2020). For example, more frequent and longer heat waves likely increases cumulative heat stress, which can result in population declines (Lv 2023) Perkins-Kirkpatrick 2020) (Harris 2018), Conradie 2019). Despite the importance of duration, relatively few studies have examined its effects on demography, limiting our understanding of increased climate variability. 
+	Sensitivity to increased climate variability varies widely among taxa and populations, and understanding the effects of weather changes for sensitive species is a priority of research and conservation (). Sensitive species frequently have narrow thermal tolerances and closely linked predator-prey dynamics, which are common among Arctic species (Foden 2013, Buckley 2016, Cohen 2020, Neilsen 2020, Thakur 2022, Descamps 2016, Juhasz 2019, Abram 2024). The Gyrfalcon is a circumpolar-distributed raptor with cold-adapted morphology and physiology, suggesting they have a limited thermal tolerance (Booms 2020) Cade 2011). Gyrfalcons also have closely linked predator-prey dynamics with cold-adapted Willow and Rock Ptarmigan (Lagopus lagopus, L. Muta, respectively; Neilsen and Cade 2017). Due to their cold adaptations, Gyrfalcons and ptarmigan are among the few birds that are year-round residents of the Arctic, exposing them to rapid Arctic weather changes throughout their annual cycle (Montgomerie 2020, Hannon 2024) Knud 2021). Gyrfalcon reproduction and occupancy rates respond strongly to ptarmigan abundance and may exert top-down pressures on ptarmigan populations (Nielsen 1999, Mossop 2011) Barichello 2011, Slettenhaar 2025) (Cotter 1999). The Gyrfalcon and ptarmigan system provides a good model to test how climate variability affects demography and prey acquisition when both predator and prey have limited thermal tolerances.
+We assessed alternative mechanisms by which climate variability (defined as both daily and sustained weather events) may be impacting nesting Gyrfalcons on the Seward Peninsula of Alaska, U.S.A. We predicted that inclement weather decreases Gyrfalcon prey acquisition by lowering daily dietary biomass delivered to nestlings and alters prey composition by reducing the proportion of ptarmigan in nestling diet. Further, we predicted that nestling survival decreases due to the direct effects of weather (e.g., thermal stress) and lower prey provisioning by the parents. Lastly, we predicted that sustained weather events exerted stronger effects than daily events due to cumulative physiological impacts. We defined inclement weather as warmer temperatures, greater precipitation, and faster wind speeds. We related sustained (5-day windows) and daily weather to nestling survival, dietary biomass (as a proxy of hunting success), and diet composition, using Generalized Linear Mixed Models coupled with data collected over nine years (2014 - 2022) from 65 breeding attempts. Determining the mechanisms by which climatic changes, at multiple temporal scales, are impacting Gyrfalcons and their ability to acquire their primary prey will help facilitate accurate forecasting of climate change impacts and improve our understanding of how climate variability affects a cold-adapted predator-prey system. 
+
+
+## Data collection 
+
+## Types of data 
+
+### Diet data
+
+### Survival data
+
+### Weather data 
+
+
+## Short-term plan for data 
+
+Store everything on BSU research drive and TPF network drives - code on GIThub. 
+
+## Schematic of 
+
+## Cleaning data 
+
+Give the code? maybe simplify, there are so many steps - maybe just avoid the diet stuff? - I don't know yet. 
+
+## Setting up analysis - analysis prep script 
+
+## Model script 
+
+## Model evaluation script 
+
+## Plotting script 
+
+## Long-term storage and data availabilty
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# References {-}
+
+<div id="refs"></div>
+
+# (APPENDIX) Appendices {-}
+
+# Appendix 1 {-}
+
+Citations of all R packages used to generate this report.
+
+```{r generateBibliography, results = "asis", echo = FALSE, warning = FALSE, message = FALSE}
+### Load R package
+library("knitcitations")
+### Process and print citations in packages.bib Clear all
+### bibliography that could be in the cash
+cleanbib()
+# Set pandoc as the default output option for bib
+options(citation_format = "pandoc")
+# Read and print bib from file
+read.bibtex(file = "packages.bib") 
+
+```
+
+# Appendix 2 {-}
+
+Version information about R, the operating system (OS) and attached or R loaded packages. This appendix was generated using `sessionInfo()`.
+
+```{r sessionInfo, eval = TRUE, echo = FALSE, warning = FALSE, message = FALSE}
+
+sessionInfo()
+
+```
+
