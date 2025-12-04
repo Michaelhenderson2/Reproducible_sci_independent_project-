@@ -29,10 +29,10 @@ knitr::opts_chunk$set(
 ```
 
 
-```{r packages, results = "hide"}
+```{r packages, results = "hide", echo = FALSE}
 # Load R packages
 #Create a vector w/ the required R packages
-pkg <- c("knitr", "rmarkdown", "bookdown", "formattable", "kableExtra", "tidyverse", "magrittr", "prettydoc", "htmltools", "knitcitations", "bibtex", "devtools", "formatR","palmerpenguins", "knitcitations", "patchwork")
+pkg <- c("knitr", "rmarkdown", "bookdown", "formattable", "kableExtra", "tidyverse", "magrittr", "prettydoc", "htmltools", "knitcitations", "bibtex", "devtools", "formatR", "knitcitations", "patchwork")
 
 #2. Check if pkg are already installed on your computer
 print("Check if packages are installed")
@@ -100,8 +100,17 @@ We assessed alternative mechanisms by which climate variability (defined as both
 
 ## Data collection 
 
-## Types of data 
+### Study system
 
+Our study site is 7,770 km2 on the southern portion of the Seward Peninsula in western Alaska, USA (64–65 N, 164–166 W). The climate is characterized as low Arctic (Meltofte et al. 2013) and the dominant vegetation is upland tundra interspersed with woody vegetation (e.g., Salix spp., Betula nana, and Alnus spp.) mainly in riparian areas (Viereck et al. 1992). Broad climatic changes are apparent in our study area including an 18 % increase in precipitation and a 2.1 °C temperature increase (Wendler 2017) in addition to other climate related changes (Cornwall 2019, Debolskiy 2020, Silapaswan et al. 2021).
+The Seward Peninsula is an important breeding area for Gyrfalcons (Booms 2009), and the local population may be declining, despite stable global populations (Franke 2020). Gyrfalcons in our study area nest on dispersed rock outcroppings and cliff-lined river systems (Kessel 1989, Bente 2011), and they compete with other raptors for nesting sites (Bente 2011) and prey (Johnson 2022). Gyrfalcons typically lay eggs in April while the landscape is snow covered, and temperatures are cold. Nestlings typically hatch in late May and fledge 48 (± 3.5) days later in July (Henderson 2019), exposing nestlings to a wide range of thermal challenges. To avoid over generalizing weather trends and risk missing important context for climate variability, we explore specific weather trends in the results section. Willow and Rock Ptarmigan comprise much of the Gyrfalcon diet during brood rearing (i.e., from hatching until fledging, Henderson 2021A)) on the Seward Peninsula, although Arctic ground squirrels are an important alterative prey species (Urocitellus parryii; hereafter: squirrels; Robinson 2019, Johnson 2021).  
+
+### Feild methods 
+
+We located occupied Gyrfalcon nesting sites via helicopter survey of historical sites in May of 2014 – 2022 (detailed in Bente 2011). We installed trail cameras (Reconyx Hyperfire I and II) at occupied sites following Robinson (2017) to obtain continuous measures of diet (Robinson and Prostor 2017) and survival data (Pidwerbesky 2025). We installed cameras during incubation (May – June) whenever possible (46/65, 71 %). We programed cameras to capture 2-3 photos when motion-activated on medium-high sensitivity, followed by a 30-second quiet period (prevents additional triggering). Cameras also captured a photo every 30 minutes. Cameras captured images from installation until fledging (May – July). We delineated nesting territories following Anderson (2019) which was based on three rules. We labeled alternative nests as belonging to the same territory if 1) they were ≤1 km apart, 2) were never occupied in the same year, and 3) had no substantial physiographic breaks or discontinuities in cliff structure. 
+
+## Types of data 
+make this a table? - with meta data?
 ### Diet data
 
 ### Survival data
@@ -109,23 +118,25 @@ We assessed alternative mechanisms by which climate variability (defined as both
 ### Weather data 
 
 
+
+
 ## Short-term plan for data 
 
 Store everything on BSU research drive and TPF network drives - code on GIThub. 
 
-## Schematic of 
+## Schematic of analytical steps
 
-## Cleaning data 
+## Cleaning data
 
 Give the code? maybe simplify, there are so many steps - maybe just avoid the diet stuff? - I don't know yet. 
 
-## Setting up analysis - analysis prep script 
+## Setting up analysis - analysis prep script
 
-## Model script 
+## Model script
 
-## Model evaluation script 
+## Model evaluation script
 
-## Plotting script 
+## Plotting script
 
 ## Long-term storage and data availabilty
 
