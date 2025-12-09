@@ -1,6 +1,6 @@
 ---
-title: "Individual Project"
-author: "Michael Henderson"
+title: "Reproducible report and workflow: Climate variability affects diet and survival of an Arctic predator, the Gyrfalcon"
+author: "Michael T. Henderson"
 date: "`r Sys.Date()`"
 output:
   bookdown::html_document2: 
@@ -11,7 +11,6 @@ output:
     number_sections: true
     theme: cerulean
     fig_caption: true
-    css: font_sizes.css
 link-citations: yes
 bibliography: ref.bib
 csl: journal-of-animal-ecology.csl
@@ -32,7 +31,7 @@ knitr::opts_chunk$set(
 ```{r packages, results = "hide", echo = FALSE}
 # Load R packages
 #Create a vector w/ the required R packages
-pkg <- c("knitr", "rmarkdown", "bookdown", "formattable", "kableExtra", "tidyverse", "magrittr", "prettydoc", "htmltools", "knitcitations", "bibtex", "devtools", "formatR", "knitcitations", "patchwork")
+pkg <- c("knitr", "rmarkdown", "bookdown", "formattable", "kableExtra", "tidyverse", "magrittr", "prettydoc", "htmltools", "knitcitations", "bibtex", "devtools", "formatR", "knitcitations", "patchwork","tidyverse", "DT")
 
 #2. Check if pkg are already installed on your computer
 print("Check if packages are installed")
@@ -64,101 +63,302 @@ knitr::write_bib(.packages(), file = "packages.bib")
 
 ```
 
-# Title
-# Key elements for project 
-+ What types of data are already published or available, and which are relevant to your topic?
-+ Where are these published data deposited?
-+ Can you reproduce the analyses based on the published data?
-+ What types of data are or will be generated during your thesis project?
-+ What are the specific characteristics of your data (e.g., storage, sharing requirements)?
-+ What are the publication standards in your field? (see e.g., Donoho, 2010; Smith et al., 2016)
-+ Etc.
+# Full citation for assosiated publication 
 
+Henderson M.T., T. L. Booms, B. W. Robinson, D. L. Johnson, J. A. Heath, B. Zuckerberg, J. Cruz. Climate variability affects diet and survival of an Arctic predator, the Gyrfalcon. Journal of Animal Ecology (*in prep*)
 
-# Core processes 
+# Purpose of this report
 
-+ A data management workflow specific to your research, which will cover the following stages of the data life cycle (see e.g. British Ecological Society, 2014a):
-+ Create
-+ Process
-+ Document
-+ Preserve
-+ Share
-+ Reuse
-+ A reproducible code to perform the following tasks to your data 
-+ Import
-+ Tidy/clean
-+ Transform
-+ Visualize
+A majority of researchers have indicated their belief that science is in facing a reproducibility crisis [@Baker2016]. Producing reproducible science can benefit scientists [@McKierran2016], further equity [@Carroll2021], and may increase public trust in science [@Anvari2018]. Reproducible science should aim to adhere to the FAIR and CARE principles outlined by @Carroll2021. The fair principles assert that data should be findable, accessible, interoperable, and reusable. In this report we aim to adhere to these principles by clearly communicating our methodology regarding data collection, cleaning, and analyses in a reproducible manner. Furthermore, due to the interdependence of our R scripts, this report provides a workflow of sequential steps to execute the full analysis. Lastly, this report focuses on providing specific guidance to future students and professionals that are working on similar analyses, to help streamline future projects and help ensure successful outcomes. 
 
-## Introduction
-Global temperatures are warming primarily due to anthropogenic activities, leading to significantly altered weather patterns (IPCC 2023). These weather changes vary spatially and impact natural systems in a variety of complex ways (Buckley 2016, McGaughran 2021, Martínez-Ruiz 2023). For example, warmer Arctic temperatures are leading to increased precipitation, whereas warmer subtropical temperatures are decreasing precipitation and leading to more frequent droughts (Trenberth 2003, Bintanja 2018, Cook 2018). These gradual weather changes can shift mean weather metrics overtime, but short-term deviations from the mean (i.e., climate variability), are also increasing with climate change (Seneviratne 2023, Fischer 2015). Greater climate variability, in turn, leads to more frequent, intense, and longer duration weather events such as heat waves and storms (Perkins-Kirkpatrick 2020; Min 2011, Seneviratne 2023). Rates of change also vary spatially, and Arctic weather changes are among the fastest in the world due to Arctic amplification (Malik 2025, Screen 2010, Rantanen 2022). Consequently, mean Arctic temperatures have increased up to four times faster than the global average, accompanied by increased climate variability including most intense and frequent extreme weather events. These climatic changes are likely to persist in the Arctic (), creating novel weather patterns with lasting consequences for Arctic species.  
-	Weather changes, including gradual changes and increased climate variability, can affect wildlife through multiple pathways. For example, when environmental conditions exceed a species’ thermal tolerance, physiological effects can occur, including increased metabolic rate, evaporative water loss, and heat stress leading to lower body condition  (Huey 2012, Ouyang 2015, Hansen 2009, Gilg 2012, Crino 2020, Fossøy 2015, Dugger 2025). Species thermal tolerance windows likely evolved to optimize molecular, cellular, and systemic processes within the historical conditions in which they evolved (Gilg 2010, Pörtner 2008). As weather patterns change, species can be exposed to conditions outside their thermal tolerance more frequently and for longer duration, leading to demographic effects like lower reproduction and survival (that one paper!). Alternatively, weather conditions can also alter species interactions, including the ability of predators to acquire prey. For example, inclement weather events can decrease predator hunting success, leading to lower prey acquisition, food provisioning for young, body condition, and survival (Perrig 2014, Schifferli 2014, Will 2014, Nägeli 2022). Predators may hunt alternative prey as a mechanism to buffer against demographic effects, although this strategy may also incur energetic costs, reduced food quality, or novel risks like disease (Will 2015, Dudek 2018, Radcliffe and Henderson 2023). As a result, changing weather patterns can affect predators by imposing physiological costs, limiting access to prey, and forcing shifts in diet. 
-These effects of climate change vary between gradually shifting means and increased climate variability (Garcia 2014, Maxwell 2019, Marcelino 2020, Neilson 2020, Clark-Wolf 2023). Gradual changes can alter species phenology and lead to range shifts, which can accumulate to alter species interactions and community dynamics ().  Conversely, increased climate variability is linked to greater impacts on species demography, by exposing individuals to more extreme and longer duration weather events. For example, extreme weather events, such as hurricanes, frequently cause widespread mortalities and reproductive failures (). Less severe but statistically rare weather events can still have pronounced effects, demonstrated by a complete ecosystem wide reproductive failure following unusually high precipitation in Greenland (Schmidt 2019). The duration of weather events can also be an important factor for the effects of climate variability on wildlife (Cohen 2020). For example, more frequent and longer heat waves likely increases cumulative heat stress, which can result in population declines (Lv 2023) Perkins-Kirkpatrick 2020) (Harris 2018), Conradie 2019). Despite the importance of duration, relatively few studies have examined its effects on demography, limiting our understanding of increased climate variability. 
-	Sensitivity to increased climate variability varies widely among taxa and populations, and understanding the effects of weather changes for sensitive species is a priority of research and conservation (). Sensitive species frequently have narrow thermal tolerances and closely linked predator-prey dynamics, which are common among Arctic species (Foden 2013, Buckley 2016, Cohen 2020, Neilsen 2020, Thakur 2022, Descamps 2016, Juhasz 2019, Abram 2024). The Gyrfalcon is a circumpolar-distributed raptor with cold-adapted morphology and physiology, suggesting they have a limited thermal tolerance (Booms 2020) Cade 2011). Gyrfalcons also have closely linked predator-prey dynamics with cold-adapted Willow and Rock Ptarmigan (Lagopus lagopus, L. Muta, respectively; Neilsen and Cade 2017). Due to their cold adaptations, Gyrfalcons and ptarmigan are among the few birds that are year-round residents of the Arctic, exposing them to rapid Arctic weather changes throughout their annual cycle (Montgomerie 2020, Hannon 2024) Knud 2021). Gyrfalcon reproduction and occupancy rates respond strongly to ptarmigan abundance and may exert top-down pressures on ptarmigan populations (Nielsen 1999, Mossop 2011) Barichello 2011, Slettenhaar 2025) (Cotter 1999). The Gyrfalcon and ptarmigan system provides a good model to test how climate variability affects demography and prey acquisition when both predator and prey have limited thermal tolerances.
-We assessed alternative mechanisms by which climate variability (defined as both daily and sustained weather events) may be impacting nesting Gyrfalcons on the Seward Peninsula of Alaska, U.S.A. We predicted that inclement weather decreases Gyrfalcon prey acquisition by lowering daily dietary biomass delivered to nestlings and alters prey composition by reducing the proportion of ptarmigan in nestling diet. Further, we predicted that nestling survival decreases due to the direct effects of weather (e.g., thermal stress) and lower prey provisioning by the parents. Lastly, we predicted that sustained weather events exerted stronger effects than daily events due to cumulative physiological impacts. We defined inclement weather as warmer temperatures, greater precipitation, and faster wind speeds. We related sustained (5-day windows) and daily weather to nestling survival, dietary biomass (as a proxy of hunting success), and diet composition, using Generalized Linear Mixed Models coupled with data collected over nine years (2014 - 2022) from 65 breeding attempts. Determining the mechanisms by which climatic changes, at multiple temporal scales, are impacting Gyrfalcons and their ability to acquire their primary prey will help facilitate accurate forecasting of climate change impacts and improve our understanding of how climate variability affects a cold-adapted predator-prey system. 
+# Scientific justification
+ 
+Global temperatures are warming primarily due to anthropogenic activities, leading to significantly altered weather patterns [@IntergovernmentalPanelonClimateChangeIPCC2023] and conservation concerns [@Urban2015; @Buckley2016; @Martnez-Ruiz2023]. These weather changes vary spatially and Arctic weather changes are among the fastest [@Screen2010; @Rantanen2022; @Malik2025]. Climate-change-driven weather changes can be categorized into two broad trends, shifting means and increased climate variability. For example, in the Arctic, mean temperatures have gradually increased ca. 4°C (i.e., shifting mean; @IntergovernmentalPanelonClimateChangeIPCC2023) whereas larger and more frequent short-term deviations from the mean (i.e, climate variability) result in more extreme temperature events [@Overland2022]. More extreme and longer duration storm events are increasing concurrent with heat waves, creating novel and persistent weather changes in the Arctic [@Trenberth2003; @Pithan2021].Increased climate variability can have substantial demographic effects on wildlife by exposing them to more intense, frequent, and longer duration weather events [@Hansen2009; @Ouyang2015]. For predators, these effects can occur through multiple pathways. Direct effect are incurred when species are exposed to conditions beyond their thermal tolerance, leading to physiological and demographic effects [@Hansen2009]. Alternatively, indirect effects occur via altered species interactions, most notably their ability to acquire prey [@Arbeiter2016). Inclement conditions can prevent species from foraging [@Oberg2015] or force prey to seek shelter (@Buckley2016), making them unavailable [@Dawson2000]. Furthermore, some species may be tolerant to shorter-term weather events (e.g., at the daily scale), whereas they are sensitive to longer-term weather events (e.g., five days). Given the importance of climate variability, including more extreme and longer duration weather events, forecasting impacts of climate change requires understanding the fine-scale effects of shorter- and longer-term weather events and there causal mechanisms (i.e., direct vs indirect). In particular, we lack a clear understanding for species that are like most sensitive to weather changes, including those with narrow thermal tolerances and close predator prey dynamics [@Foden2013]. Here we focus on the Gyrfalcon (*Falco rusticolus*) and their primary prey, ptarmigan (*Lagopus lagopus* and *L. muta*), which are cold-adapted Arctic specialists with closely-link population dynamics [@Nielsen2017].       
 
+<br>
 
-## Data collection 
+We assessed alternative mechanisms by which climate variability (defined as both daily and sustained weather events) may be impacting nesting Gyrfalcons on the Seward Peninsula of Alaska, U.S.A. We predicted that **inclement weather decreases Gyrfalcon prey acquisition by lowering daily dietary biomass delivered to nestlings and alters prey composition by reducing the proportion of ptarmigan in nestling diet**. Further, we predicted that **nestling survival decreases due to the direct effects of weather (e.g., thermal stress) and lower prey provisioning by the parents**. Lastly, we predicted that **sustained weather events exerted stronger effects than daily events due to cumulative physiological impacts**. We defined inclement weather as warmer temperatures, greater precipitation, and faster wind speeds. We related sustained (5-day windows) and daily weather to nestling survival, dietary biomass (as a proxy of hunting success), and diet composition, using Generalized Linear Mixed Models coupled with data collected over nine years (2014 - 2022) from 65 breeding attempts. Determining the mechanisms by which climatic changes, at multiple temporal scales, are impacting Gyrfalcons and their ability to acquire their primary prey will help facilitate accurate forecasting of climate change impacts and improve our understanding of how climate variability affects a cold-adapted predator-prey system. 
 
-### Study system
+<br>
 
-Our study site is 7,770 km2 on the southern portion of the Seward Peninsula in western Alaska, USA (64–65 N, 164–166 W). The climate is characterized as low Arctic (Meltofte et al. 2013) and the dominant vegetation is upland tundra interspersed with woody vegetation (e.g., Salix spp., Betula nana, and Alnus spp.) mainly in riparian areas (Viereck et al. 1992). Broad climatic changes are apparent in our study area including an 18 % increase in precipitation and a 2.1 °C temperature increase (Wendler 2017) in addition to other climate related changes (Cornwall 2019, Debolskiy 2020, Silapaswan et al. 2021).
-The Seward Peninsula is an important breeding area for Gyrfalcons (Booms 2009), and the local population may be declining, despite stable global populations (Franke 2020). Gyrfalcons in our study area nest on dispersed rock outcroppings and cliff-lined river systems (Kessel 1989, Bente 2011), and they compete with other raptors for nesting sites (Bente 2011) and prey (Johnson 2022). Gyrfalcons typically lay eggs in April while the landscape is snow covered, and temperatures are cold. Nestlings typically hatch in late May and fledge 48 (± 3.5) days later in July (Henderson 2019), exposing nestlings to a wide range of thermal challenges. To avoid over generalizing weather trends and risk missing important context for climate variability, we explore specific weather trends in the results section. Willow and Rock Ptarmigan comprise much of the Gyrfalcon diet during brood rearing (i.e., from hatching until fledging, Henderson 2021A)) on the Seward Peninsula, although Arctic ground squirrels are an important alterative prey species (Urocitellus parryii; hereafter: squirrels; Robinson 2019, Johnson 2021).  
+```{r, message = FALSE, warning = FALSE, echo = FALSE, fig.cap = "Project Schematic displaying direct and indirect mechanisms for how climate variability (at daily and sustained time frames) effects Gyrfalcon nestling survival.", fig.align = 'center', out.width = "100%"}
 
-### Feild methods 
+knitr::include_graphics("./Data/concept_map.png")
 
-We located occupied Gyrfalcon nesting sites via helicopter survey of historical sites in May of 2014 – 2022 (detailed in Bente 2011). We installed trail cameras (Reconyx Hyperfire I and II) at occupied sites following Robinson (2017) to obtain continuous measures of diet (Robinson and Prostor 2017) and survival data (Pidwerbesky 2025). We installed cameras during incubation (May – June) whenever possible (46/65, 71 %). We programed cameras to capture 2-3 photos when motion-activated on medium-high sensitivity, followed by a 30-second quiet period (prevents additional triggering). Cameras also captured a photo every 30 minutes. Cameras captured images from installation until fledging (May – July). We delineated nesting territories following Anderson (2019) which was based on three rules. We labeled alternative nests as belonging to the same territory if 1) they were ≤1 km apart, 2) were never occupied in the same year, and 3) had no substantial physiographic breaks or discontinuities in cliff structure. 
+```
 
-## Types of data 
-make this a table? - with meta data?
-### Diet data
+# Data collection 
+
+## Study system
+
+Our study site is 7,770 km2 on the southern portion of the Seward Peninsula in western Alaska, USA (64–65 N, 164–166 W). The climate is characterized as low Arctic [@Christensen2013] and the dominant vegetation is upland tundra interspersed with woody vegetation (e.g., *Salix* spp., *Betula nana*, and *Alnus* spp.) mainly in riparian areas [@Viereck1992]. Broad climatic changes are apparent in our study area including an 18 % increase in precipitation and a 2.1 °C temperature increase [@Wendler2017] in addition to other climate related changes [@Cornwall2019; @Debolskiy2020].
+
+<br>
+
+The Seward Peninsula is an important breeding area for Gyrfalcons [@Booms2010], and the local population may be declining, despite stable global populations [@Franke2020]. Gyrfalcons in our study area nest on dispersed rock outcroppings and cliff-lined river systems [@Kessel1989; @Bente2011], and they compete with other raptors for nesting sites [@Bente2011] and prey [@Johnson2022]. Gyrfalcons typically lay eggs in April while the landscape is snow covered, and temperatures are cold. Nestlings typically hatch in late May and fledge 48 (± 3.5) days later in July [@Henderson2019], exposing nestlings to a wide range of thermal challenges. To avoid over generalizing weather trends and risk missing important context for climate variability, we explore specific weather trends in the results section. Willow and Rock Ptarmigan comprise much of the Gyrfalcon diet during brood rearing (i.e., from hatching until fledging, @Henderson2021)) on the Seward Peninsula, although Arctic ground squirrels are an important alternative prey species (*Urocitellus parryii*; hereafter: squirrel) [@Robinson2019; @Johnson2022].  
+
+## Feild methods 
+
+We located occupied Gyrfalcon nesting sites via helicopter survey of historical sites in May of 2014 – 2022 (detailed in @Bente2011). We installed trail cameras (Reconyx Hyperfire I and II) at occupied sites following to obtain continuous measures of diet [@Robinson2017] and survival data [@Pidwerbesky2025]. We installed cameras during incubation (May – June) whenever possible (46/65, 71 %). We programmed cameras to capture 2-3 photos when motion-activated on medium-high sensitivity, followed by a 30-second quiet period (prevents additional triggering). Cameras also captured a photo every 30 minutes. Cameras captured images from installation until fledging (May – July). We delineated nesting territories following @Anderson2019 which was based on three rules. We labeled alternative nests as belonging to the same territory if 1) they were ≤1 km apart, 2) were never occupied in the same year, and 3) had no substantial physiographic breaks or discontinuities in cliff structure. 
+
+### Nestling survival data 
+
+We processed nest camera images manually to estimate how many nestlings were alive at each nest, for each monitoring day (days when cameras were operating), by noting the maximum number of nestlings observed. We then summarized observations for each nestling with a 1 (alive) or a 0 (dead) for each monitoring day. We considered a nest failed when we recorded five consecutive days of no living nestlings, and suspended monitoring. We input NAs for days and sites prior to camera installation, during camera malfunctions, or after nests had failed. Nestlings were unmarked, thus we were unable to account for covariates that vary by individual (e.g., hatching order or sex). 
+
+### Weather data collection
+
+We downloaded spatially-explicit (1 km * 1 km grid cell resolution) daily total precipitation and maximum temperature (hereafter: daily precipitation and daily Tmax, respectively) data from Daymet using the ‘DaymetR’ package (Hufkens 2023) in program R (v4.0.3, R Core Team 2020) using R studio (Posit Team 2025). We selected daily Tmax, because it was more likely to elicit a stress response for a cold-adapted species compared to the mean or minimum temperature. We downloaded spatially-explicit mean daily wind speed from the National Oceanic and Atmospheric Administration’s National Centers for Environmental Prediction – [North American Regional Reanalysis (NCEP – NARR) dataset]( https://psl.noaa.gov/data/gridded/data.narr.html), accessed December 2024, 32 km X 32 km grid cell resolution), because these data are not available via Daymet. In addition to daily weather metrics, we also summed daily precipitation and averaged Tmax and wind speed over the five days prior to the monitoring day, to capture sustained weather patterns (hereafter: 5-day precipitation, 5-day Tmax, and 5-day wind speed, respectively). We selected five days because it was the mean number of consecutive days with or without precipitation in our study area.
+
+### Dietary biomass and composition - think this should be moved to the appropriate script. 
+
+We identified prey items to species from nest camera images following Robinson (2017). To account for different prey biomasses, we assigned each species a mass based on reference material (Supporting Information, Table S2.1). We were unable to distinguish between Rock and Willow Ptarmigan, so we grouped these species (hereafter: ptarmigan). We were unable to identify some prey deliveries to species (383 out of 9207 deliveries, ca. 4 %) thus we assigned unknown prey items the mean value of all prey masses, weighted by occurrence (309 g). For days when diet was not adequately captured (e.g., the day the camera was installed or camera malfunctions; 327 out of 2729 days, 12 %), we assigned the mean daily biomass for all nests and days (1104 g). In addition to daily dietary biomass, we also summed dietary biomass over five days since the accumulative nutritional stress caused by multiple days without food is more likely to impact survival (Kitaysky 2010).
+For daily diet composition, we calculated the proportion of daily biomass that was ptarmigan, squirrels, and other species (including unknowns). We included all days with prey deliveries, including those after nestlings were 40 days old, assuming that the probability of detection would not be biased towards any prey category (d = 2278 days and n = 65 nests).  
+
+### Analaysis overview - quick write up of the three models and include that figure. 
+
+```{r, message = FALSE, warning = FALSE, echo = FALSE, fig.cap = "Model summaries.", fig.align = 'center', out.width = "100%"}
+
+knitr::include_graphics("./Data/models.png")
+
+```
+
+# Data summaries
+
+```{r data_table, echo = FALSE}
+
+data_tab <- read.csv("./Data/repro_table.csv")
+
+datatable(data_tab, options = list(pageLength = 6, autoWidth = TRUE), caption = "Data summary table. Breif description of inital and final data formats.", rownames = FALSE)
+
+```
+
+## Data format examples and metadata
+
+Below we provide examples of the initial and final data formats, with metadata, to provide an overview the overall goal of data cleaning and analysis preparation. 
 
 ### Survival data
 
-### Weather data 
+#### Initial survival data
+
+```{r, message = FALSE, warning = FALSE, echo = FALSE, fig.cap = "Screenshot of inital survival data.", fig.align = 'center', out.width = "100%"}
+
+knitr::include_graphics("./Data/surv_int.png")
+
+```
+
+These survival data contain the number of surviving nestlings (and eggs) for each nest, observed from nest cameras. "nest.year" column is the combination of the year and the nest name. "hatch_date" is the date when the first nestling hatched. "dayx_nestlings" and "dayx_eggs" are the maximum number of observed nestlings and eggs on that day, respectively. Day 1 corresponds with the hatch date and cells with -99 indicate a lack of data (e.g., camera was not installed yet).   
+
+#### Final survival data
+
+```{r, message = FALSE, warning = FALSE, echo = FALSE, fig.cap = "Screenshot of final survival data.", fig.align = 'center', out.width = "100%"}
+
+knitr::include_graphics("./Data/surv_fin.png")
+
+```
+
+This is the final matrix used in the survival analysis. The rows have now been extrapolated to individual nestlings and assigned a nestling number. Column V1 is the first monitoring day (first day with data - not hatch date) and NAs denote days where no data exists. It is essentially that all matrices used in the survival match this matrix precisely.     
 
 
+### Weather data
 
+
+#### Initial weather data
+
+```{r, message = FALSE, warning = FALSE, echo = FALSE, fig.cap = "Screenshot of initial weather data - maximum temperature on 15 June 2022.", fig.align = 'center', out.width = "60%"}
+
+knitr::include_graphics("./Data/weather_int.png")
+
+```
+
+#### Final weather data
+
+```{r, message = FALSE, warning = FALSE, echo = FALSE, fig.cap = "Screenshot of final weather data.", fig.align = 'center', out.width = "100%"}
+
+knitr::include_graphics("./Data/weather_fin.png")
+
+```
+give the metadata = units 
+
+### Diet data
+
+#### Initial diet data
+
+```{r, message = FALSE, warning = FALSE, echo = FALSE, fig.cap = "Screenshot of intial diet data.", fig.align = 'center', out.width = "100%"}
+
+knitr::include_graphics("./Data/diet_int.png")
+
+```
+
+#### Final diet data - for survival analysis
+
+```{r, message = FALSE, warning = FALSE, echo = FALSE, fig.cap = "Screenshot of intial diet data.", fig.align = 'center', out.width = "100%"}
+
+knitr::include_graphics("./Data/diet_fin.png")
+
+```
+
+#### Final diet data - for dietary biomass analysis
+
+
+#### Final diet data - for diet composition analysis
+
+### Nest-level covariates
+
+#### Initial nest-level covariates data
+
+Brief description 
+Screenshot
+Metadata 
+
+#### Final nest-level covariates data
+
+```{r, message = FALSE, warning = FALSE, echo = FALSE, fig.cap = "Screenshot of final nest-level covariates dataset.", fig.align = 'center', out.width = "100%"}
+
+knitr::include_graphics("./Data/nests_fin.png")
+
+```
+
+# Analytical Work flow
+
+## Work flow overview 
+
+```{r, message = FALSE, warning = FALSE, echo = FALSE, fig.cap = "Workflow for analyses and dependent R scripts.", fig.align = 'center', out.width = "100%"}
+
+knitr::include_graphics("./Data/work_flow.png")
+
+```
+
+All scripts are created and ran in program R, via Rstudio. For each script, I provide a brief overview of the script function and highlight essential aspects in the code. I did not include code that was used to verify accuracy, correct minor issues, or simple reformatting because this document is best used as a guidance through the scripts. For details regarding specific data cleaning practices, please see the individual scripts. 
+
+## Script 01_gps_cleaning.R {s1}
+
+The purpose of this script was to import a csv with gps points for all occupied Gyrfalcon sites (in any year), clean the data, convert to a sf object, and export a shape file to be used in [02_daymet_download.R](#s2).
+
+
+```{r gps_cleaning, eval = FALSE}
+
+#load libraries
+library( tidyverse )
+library( sf )
+
+#define where you have site csv - below is the path to the Cruz research drive at Boise State University. 
+sitedir <-  "Z:/Alaska/Henderson/ak_spatial_data/seward_pen_data/"
+
+#import csv with gps points
+og_point <- read.csv( file = paste0(sitedir, "Bente_allpoints_2023-10-24.csv", sep = ""),
+                    header = TRUE )
+
+# save the crs for WGS84 in lat long 
+daymetcrs <- st_crs(4326)
+
+#convert csv of gps points to a spatial object - adds geometry columns
+sites <- sf::st_as_sf( x = sites.raw, coords = c("longitude","latitude" ) ,
+                       crs = daymetcrs )
+
+#save as a shape file - which will be used in the 02_daymet_downlownload.R script 
+sf::st_write(sites,paste0(sitedir, "heli_gps_points.shp" )
+
+```
+
+
+## Script 02_daymet_download.R {#s2}
+The purpose of the script is to import the heli_gps_points.shp file, determine which daymet tile they land in, and download the associated tiles. [Daymet](https://daymet.ornl.gov/overview) is a data product compiled by NASA and the Earth Science Data and Information Systems that provides spatially explicate weather data. These data are grouped by tiles (2° X 2°) with a raster cell size of 1-km X 1-km. 
+
+```{r daymet_download, eval = FALSE}
+
+# Load relevant packages. 
+library(daymetr) #package for downloading daymet data
+library(sf)
+library(tidyverse)
+
+#define where you have site csv
+sitedir <-  "Z:/Alaska/Henderson/ak_spatial_data/seward_pen_data/"
+
+#define where the weather data will be downloaded to 
+datadir <-  "Z:/Alaska/Henderson/ak_spatial_data/daymet_data_sp_tiles/"
+
+#import heli_gps_points.shp 
+sites <-  sf::st_read( paste0(sitedir, "heli_gps_points.shp") , 
+                       quiet = TRUE )
+
+#intercept the sites with the tiles to determine which tiles the points land in 
+out <- st_intersection( sites, tile_outlines ) #tile_outlines are part of the daymetR package.
+
+#extract tile ids
+site_tiles <- unique( out$TileID #returns a vector of the needed tiles 
+                      
+#download daymet data for relevant tiles
+download_daymet_tiles(
+  tiles = site_tiles, #download tiles that are in the vector
+  start = 1980, #download all years between 1980 and 2022
+  end = 2022,
+  path = datadir, #where to download them doo 
+  param = "ALL", #define which weather metrics to download 
+  silent = FALSE,
+  force = FALSE
+)
+                      
+```
+
+The download results in a .nc file for each tile, year, and weather metric. I then manually sorted them into a file structure seen in \@ref(fig:tiles).
+
+```{r tiles, message = FALSE, warning = FALSE, echo = FALSE, fig.cap = "File structure for daymet weather data.", fig.align = 'center', out.width = "60%"}
+
+knitr::include_graphics("./Data/tiles.png")
+
+```
+
+## Script 03_weather_prep.R {#s3}
+
+## Script 04_diet_cleaning.R {#s4}
+
+## Script 05_diet_prep_c.R {#s5}
+
+## Script 06_weather_prep_c.R {#s6}
+
+## Script 07_comp_analysis.R {#s7}
+
+## Script 08_comp_eval.R {#s8}
+
+## Script 09_comp_plot.R {#s9}
+
+## Script 10_diet_prep_b.R {#s10}
+
+## Script 11_weather_prep_b.R {#s11}
+
+## Script 12_biomass_analysis.R {#s12}
+
+## Script 13_biomass_eval.R {#s13}
+
+## Script 14_biomass_plot.R {#s14}
+
+## Script 15_diet_prep_s.R {#s15}
+
+## Script 16_Surv_analysis_prep.R {#s16}
+
+## Script 17_surv_analysis.R {#s17}
+https://dse.cdl.unimi.it/sites/lb79/files/2024-06/Instructions_to_install_JAGS.pdf
+
+## Script 18_surv_eval.R {#s18}
+
+## Script 19_surv_plotting {#s19}
+
+
+# Summary of findings -maybe 
+
+# Data managment plan
 
 ## Short-term plan for data 
 
-Store everything on BSU research drive and TPF network drives - code on GIThub. 
-
-## Schematic of analytical steps
-
-## Cleaning data
-
-Give the code? maybe simplify, there are so many steps - maybe just avoid the diet stuff? - I don't know yet. 
-
-## Setting up analysis - analysis prep script
-
-## Model script
-
-## Model evaluation script
-
-## Plotting script
+Store everything on BSU research drive and TPF network drives - code on GIThub.
+Keep original data and cleaned data.
+What does final data look like with screenshots and metadata. 
 
 ## Long-term storage and data availabilty
+Focus on reproducability plan - cleaning the data and structure of files - create functions and large loops to cycle through folders and files - to avoid errors from replicating the script over and over. 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# Acknowledgments
+Copy from a recent paper - 
 
 
 # References {-}
@@ -194,3 +394,29 @@ sessionInfo()
 
 ```
 
+
+# Title
+# Key elements for project 
++ What types of data are already published or available, and which are relevant to your topic?
++ Where are these published data deposited?
++ Can you reproduce the analyses based on the published data?
++ What types of data are or will be generated during your thesis project?
++ What are the specific characteristics of your data (e.g., storage, sharing requirements)?
++ What are the publication standards in your field? (see e.g., Donoho, 2010; Smith et al., 2016)
++ Etc.
+
+
+# Core processes 
+
++ A data management workflow specific to your research, which will cover the following stages of the data life cycle (see e.g. British Ecological Society, 2014a):
++ Create
++ Process
++ Document
++ Preserve
++ Share
++ Reuse
++ A reproducible code to perform the following tasks to your data 
++ Import
++ Tidy/clean
++ Transform
++ Visualize
